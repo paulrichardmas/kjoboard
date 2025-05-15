@@ -2,6 +2,8 @@ from rest_framework.serializers import ModelSerializer, ValidationError
 from accounts.models.profile import Profile, Company, Education
 from accounts.models.user import User
 from .accounts_serializers import UserResponseSerializer
+from job.serializer import JobRepositorySerializer
+from job.models import Job
 
 class CompanySerializer(ModelSerializer):
   class Meta:
@@ -44,7 +46,8 @@ class ProfileCreateSerializer(ModelSerializer):
         email=validated_data["email"],
         phone=validated_data["phone"],
         bio=validated_data["bio"],
-        education=education,)
+        education=education
+      )
 
       for company_data in companies_data:
         company = Company.objects.create(**company_data)

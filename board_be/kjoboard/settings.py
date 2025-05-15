@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework',
     'accounts.apps.AccountsConfig',
+    'job.apps.JobConfig'
 ]
 
 MIDDLEWARE = [
