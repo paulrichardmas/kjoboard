@@ -1,0 +1,8 @@
+Django
+psycopg
+djangorestframework
+djangorestframework-simplejwt
+drf-spectacular
+uuid
+djoser
+drf-yasg

@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  postgres_db:
+    image: postgres
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: board
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  board_be:
+    build: ./board_be
+    container_name: board_be
+    volumes:
+      - ./board_be:/srv/board_be
+    ports:
+      - "8000:8000"
