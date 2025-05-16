@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from job.models import Job
-from prompt.models import Prompt
+from prompt.models import Prompt, PromptFields
 from accounts.models.profile import Profile
 from core.decorators.auth_decorator import protected_view_cbv
 from core.decorators.profile_decorator import require_profile_cbv
@@ -132,19 +132,13 @@ class JobPromptGenView(APIView):
       profile = Profile.objects.get(profile_id=profile_id)
       job = Job.objects.get(job_id=job_id)
 
-      print(prompt.text)
+      format_data = {}
 
-      promt_text = prompt.text.format(
-        title=job.title,
-        work_history=profile.work_history(),
-        company_count=profile.companies.count(),
-        name=profile.name,
-        location=profile.location,
-        phone_number=profile.phone,
-        email=profile.email,
-        education=profile.education_history(),
-        job_description=job.description
-      )
+      prompt_fields = PromptFields.objects.all()
+      for field in prompt_fields:
+        format_data[field.name] = eval(field.field)
+
+      promt_text = prompt.text.format(**format_data)
 
       job.prompt = promt_text
       job.save()
