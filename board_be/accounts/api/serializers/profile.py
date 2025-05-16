@@ -1,9 +1,7 @@
 from rest_framework.serializers import ModelSerializer, ValidationError
 from accounts.models.profile import Profile, Company, Education
-from accounts.models.user import User
+from accounts.models import User
 from .accounts_serializers import UserResponseSerializer
-from job.serializer import JobRepositorySerializer
-from job.models import Job
 
 class CompanySerializer(ModelSerializer):
   class Meta:
@@ -21,7 +19,7 @@ class ProfileRepositorySerializer(ModelSerializer):
   companies = CompanySerializer(many=True, required=False)
   class Meta:
     model = Profile
-    fields = ["profile_id", "user", "name", "title", "email", "phone", "bio", "companies", "education"]
+    fields = ["profile_id", "user", "name", "title", "email", "phone", "bio", "companies", "education", "location", "linkedin_url"]
 
 class ProfileCreateSerializer(ModelSerializer):
   education = EducationSerializer()
@@ -29,7 +27,7 @@ class ProfileCreateSerializer(ModelSerializer):
 
   class Meta:
     model=Profile
-    fields=("name", "title", "email", "phone", "bio", "companies", "education")
+    fields=("name", "title", "email", "phone", "bio", "companies", "education", "location", "linkedin_url")
 
   def create(self, validated_data):
     user_id = self.context.get("user")
@@ -45,6 +43,8 @@ class ProfileCreateSerializer(ModelSerializer):
         title=validated_data["title"],
         email=validated_data["email"],
         phone=validated_data["phone"],
+        location=validated_data["location"],
+        linkedin_url=validated_data["linkedin_url"],
         bio=validated_data["bio"],
         education=education
       )
@@ -63,7 +63,7 @@ class ProfilePatchSerializer(ModelSerializer):
 
   class Meta:
     model=Profile
-    fields=("name", "title", "email", "phone", "bio", "companies", "education")
+    fields=("name", "title", "email", "phone", "bio", "companies", "education", "location", "linkedin_url")
     extra_kwargs = {
         "name": {"required": False},
         "title": {"required": False},
@@ -72,6 +72,8 @@ class ProfilePatchSerializer(ModelSerializer):
         "bio": {"required": False},
         "companies": {"required": False},
         "education": {"required": False},
+        "location": {"required": False},
+        "linkedin_url": {"required": False},
     }
 
   def update(self, instance, validated_data):
@@ -101,7 +103,7 @@ class ProfilePatchSerializer(ModelSerializer):
 
             instance.companies.add(company)
 
-    for attr in ["name", "title", "email", "phone", "bio"]:
+    for attr in ["name", "title", "email", "phone", "bio", "location", "linkedin_url"]:
       if attr in validated_data:
           setattr(instance, attr, validated_data[attr])
 

@@ -1,7 +1,9 @@
 import uuid
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 class Prompt(models.Model):
   prompt_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
   text = models.TextField()
+  info = ArrayField(models.BooleanField(), default=list, blank=True)
   default = models.BooleanField(default=False)

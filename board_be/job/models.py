@@ -20,3 +20,4 @@ class Job(models.Model):
   status = models.CharField(max_length=20, choices=Status.choices, default=Status.NOT_APPLIED)
   profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
   prompt = models.TextField(blank=True)
+  resume_path = models.TextField(blank=True)

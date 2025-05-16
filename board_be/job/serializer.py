@@ -5,12 +5,17 @@ from accounts.models.profile import Profile
 class JobRepositorySerializer(ModelSerializer):
   class Meta:
     model=Job
-    fields=["job_id", "company", "title", "location", "description", "applications", "posted_date", "status", "prompt"]
+    fields=["job_id", "company", "title", "location", "description", "applications", "posted_date", "status", "prompt", "resume_path"]
 
 class JobStatusUpdateSerializer(ModelSerializer):
   class Meta:
     model=Job
     fields=["status"]
+
+class JobApplySerializer(ModelSerializer):
+  class Meta:
+    model=Job
+    fields=["resume_path"]
 
 
 class JobCheckSerializer(ModelSerializer):

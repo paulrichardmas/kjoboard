@@ -1,6 +1,5 @@
 import uuid
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 from .user import User
 
 class Company(models.Model):
@@ -21,6 +20,8 @@ class Profile(models.Model):
   profile_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   name = models.CharField(max_length=255)
+  location = models.TextField(blank=True)
+  linkedin_url = models.URLField(blank=True)
   title = models.TextField()
   email = models.EmailField()
   phone = models.TextField(blank=True)
@@ -28,3 +29,8 @@ class Profile(models.Model):
   companies = models.ManyToManyField(Company, blank=True)
   education = models.ForeignKey(Education, on_delete=models.CASCADE)
 
+  def work_history(self):
+    return ", ".join(f"{company.company_name} ({company.start_date} - {company.end_date})" for company in self.companies.all())
+
+  def education_history(self):
+    return f"{self.education.university_name} | {self.education.degree}  ({self.education.start_date} - {self.education.end_date})"

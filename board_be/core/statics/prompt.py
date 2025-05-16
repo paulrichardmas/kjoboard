@@ -1,0 +1,16 @@
+prompt_field_list = [
+  'profile_name',
+  'profile_location',
+  'profile_linkedin_url',
+  'profile_title',
+  'profile_email',
+  'profile_bio',
+  'profile_phone',
+  'profile_work_history',
+  'profile_education_history',
+  'job_url',
+  'job_company',
+  'job_title',
+  'job_location',
+  'job_description',
+]
