@@ -4,14 +4,15 @@ from rest_framework import status
 from job.models import Job
 from core.decorators.auth_decorator import protected_view_cbv
 from core.decorators.profile_decorator import require_profile_cbv
-from job.serializer import JobCreateSerializer, JobRepositorySerializer
+from job.serializer import JobCreateSerializer, JobRepositorySerializer, JobStatusUpdateSerializer, JobCheckSerializer
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-
+  
+@protected_view_cbv
 @require_profile_cbv
-class JobView(APIView):
+class JobListCreateView(APIView):
   @swagger_auto_schema(
-    responses={201: openapi.Response('Profile Fetched', JobRepositorySerializer)},
+    responses={200: openapi.Response('Profile Fetched', JobRepositorySerializer)},
     operation_description="Fetch jobs with profile",
     tags=['Job']
   )
@@ -23,10 +24,7 @@ class JobView(APIView):
 
     except:
       return Response({"error": "No job"}, status=status.HTTP_400_BAD_REQUEST)
-  
-@protected_view_cbv
-@require_profile_cbv
-class JobCreateView(APIView):
+
   @swagger_auto_schema(
     request_body=JobCreateSerializer,
     responses={201: openapi.Response('Job created', JobRepositorySerializer)},
@@ -44,3 +42,54 @@ class JobCreateView(APIView):
     except:
       return Response({"error": "Invalid params"}, status=status.HTTP_400_BAD_REQUEST)
     
+@protected_view_cbv
+class JobDetailView(APIView):
+  @swagger_auto_schema(
+    responses={200: openapi.Response('A Profile Fetched', JobRepositorySerializer)},
+    operation_description="Fetch a job with job_id",
+    tags=['Job']
+  )
+  def get(self, request, job_id):
+    try:
+      jobs = Job.objects.get(job_id = job_id)
+      serializer = JobRepositorySerializer(jobs)
+      return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except:
+      return Response({"error": "No job"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@protected_view_cbv
+@require_profile_cbv
+class JobUpdateView(APIView):
+  @swagger_auto_schema(
+    request_body=JobStatusUpdateSerializer,
+    responses={200: openapi.Response('Update Job status', JobRepositorySerializer)},
+    operation_description="Update job status",
+    tags=['Job']
+  )
+  def post(self, request, profile_id, job_id):
+    try:
+      job=Job.objects.get(job_id=job_id)
+      job.status=request.data["status"]
+      job.save()
+
+      return Response(JobRepositorySerializer(job).data, status=status.HTTP_200_OK)
+    except:
+      return Response({"error": "Invalid params"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@protected_view_cbv
+@require_profile_cbv
+class JobCheckView(APIView):
+  @swagger_auto_schema(
+    request_body=JobCheckSerializer,
+    responses={200: openapi.Response('Check job with link', JobRepositorySerializer)},
+    operation_description="Check job with link",
+    tags=['Job']
+  )
+  def post(self, request, profile_id):
+    try:
+      job=Job.objects.get(profile_id=profile_id, url=request.data['url'])
+
+      return Response(JobRepositorySerializer(job).data, status=status.HTTP_200_OK)
+    except:
+      return Response({"error": "Not found job"}, status=status.HTTP_400_BAD_REQUEST)

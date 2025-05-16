@@ -7,6 +7,17 @@ class JobRepositorySerializer(ModelSerializer):
     model=Job
     fields=["job_id", "company", "title", "location", "description", "applications", "posted_date", "status", "prompt"]
 
+class JobStatusUpdateSerializer(ModelSerializer):
+  class Meta:
+    model=Job
+    fields=["status"]
+
+
+class JobCheckSerializer(ModelSerializer):
+  class Meta:
+    model=Job
+    fields=["url"]
+
 class JobCreateSerializer(ModelSerializer):
   class Meta:
     model=Job
