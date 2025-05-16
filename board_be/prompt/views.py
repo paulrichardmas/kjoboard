@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from core.decorators.auth_decorator import protected_view_cbv
+from core.decorators.auth_decorator import protected_view_cbv, protected_view
 from .serializer import PromptCreateSerializer, PromptRepositorySerializer, PromptFieldRpositorySerializer
 from .models import Prompt, PromptFields
 from drf_yasg import openapi
@@ -46,6 +46,7 @@ class PromptView(APIView):
     ))}
 )
 @api_view(['get'])
+@protected_view
 def get_prompt_fields(request):
   prompts = PromptFields.objects.all()
 

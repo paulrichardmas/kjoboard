@@ -1,11 +1,12 @@
 from functools import wraps
 from django.http import JsonResponse
+from django.contrib.auth.models import AnonymousUser
 
 def protected_view(view_func):
   @wraps(view_func)
   def wrapper(request, *args, **kwargs):
     user = getattr(request, 'user', None)
-    if not user:
+    if not user or isinstance(user, AnonymousUser):
       return JsonResponse({'error': 'Authentication required'}, status=401)
     return view_func(request, *args, **kwargs)
   return wrapper
@@ -16,7 +17,7 @@ def protected_view_cbv(cls):
   @wraps(original_dispatch)
   def dispatch_wrapper(self, request, *args, **kwargs):
     user = getattr(request, 'user', None)
-    if not user:
+    if not user or isinstance(user, AnonymousUser):
       return JsonResponse({'error': 'Authentication required'}, status=401)
     return original_dispatch(self, request, *args, **kwargs)
   cls.dispatch = dispatch_wrapper
