@@ -1,7 +1,7 @@
 import { fetchJobDetail } from "~src/utils"
 
 export const config = {
-  matches: ["https://*.dice.com/*"]
+  matches: ["*://*.indeed.com/*"]
 }
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
