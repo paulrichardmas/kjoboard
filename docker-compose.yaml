@@ -18,3 +18,16 @@ services:
       - ./board_be:/srv/board_be
     ports:
       - "8000:8000"
+
+  board_fe:
+    build: ./board_fe
+    container_name: board_fe
+    volumes:
+      - ./board_fe:/srv/board_fe
+    ports:
+      - "5173:5173"
+    depends_on:
+      - postgres_db
+      - board_be
+    environment:
+      - VITE_API_URL=http://localhost:8000

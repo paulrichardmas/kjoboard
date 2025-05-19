@@ -17,7 +17,8 @@ class ProfileListCreateView(APIView):
   )
   def get(self, request):
     try:
-      profiles = Profile.objects.all()
+      profiles = Profile.objects.filter(user_id = request.user.user_id)
+      print(profiles)
       serializer = ProfileRepositorySerializer(profiles, many=True)
       return Response({"profiles": serializer.data}, status=status.HTTP_200_OK)
     except:

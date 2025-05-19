@@ -14,7 +14,8 @@ const Dashboard = () => {
     updateProfile,
     fetchJob,
     pushJob,
-    applyJob
+    applyJob,
+    generatePrompt
   } = useDashboard()
 
   const onChangeProfile = (event) => {
@@ -96,11 +97,15 @@ const Dashboard = () => {
 
           <div className="flex gap-2">
             <Button onClick={pushJob} disabled={canPushJob.canPush}>
-              Push this job to DB!
+              Push to DB
+            </Button>
+
+            <Button onClick={generatePrompt} disabled={!canPushJob.existingJob}>
+              Prompt
             </Button>
 
             <Button onClick={applyJob} disabled={canApplyJob}>
-              Applied!
+              Applied
             </Button>
           </div>
         </div>

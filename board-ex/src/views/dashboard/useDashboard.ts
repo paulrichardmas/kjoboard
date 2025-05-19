@@ -21,7 +21,7 @@ export const useDashboard = () => {
 
   const canPushJob = useMemo(() => ({
     canPush: haveJobStatus != ECanPushJob.CAN_PUSH_JOB,
-    existingJob: haveJobStatus == ECanPushJob.JOB_EXISTING
+    existingJob: haveJobStatus == ECanPushJob.JOB_EXISTING,
   }), [haveJobStatus])
 
   const jobStatus = useMemo(() => job ? job.status : EJobStatus.NONE, [job]);
@@ -108,7 +108,7 @@ export const useDashboard = () => {
     } finally {
       dispatch(removeBanner());
     }
-  };
+  }
 
   const applyJob = async () => {
     dispatch(setBanner());
@@ -117,6 +117,18 @@ export const useDashboard = () => {
         resumePath: ""
       })
       setJob(res.data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      dispatch(removeBanner());
+    }
+  }
+
+  const generatePrompt = async () => {
+    dispatch(setBanner());
+    try {
+      const res = await axios.get(`/job/gen-prompt/${profile.profileId}/${job.jobId}/`)
+      console.log(res)
     } catch (error) {
       console.error(error)
     } finally {
@@ -135,6 +147,7 @@ export const useDashboard = () => {
     setJobDetail,
     fetchJob,
     pushJob,
-    applyJob
+    applyJob,
+    generatePrompt
   }
 };
