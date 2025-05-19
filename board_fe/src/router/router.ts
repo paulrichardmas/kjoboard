@@ -5,6 +5,7 @@ import Dashboard from "../views/dashboard/Dashboard";
 import Profile from "../views/profile/Profile";
 import ProfileCreate from "../views/profile/create/ProfileCreate";
 import ProfileDetail from "../views/profile/detail/ProfileDetail"
+import Platforms from "../views/platforms/Platforms";
 
 const router = createBrowserRouter([
   { path: "/", Component: Dashboard},
@@ -12,7 +13,8 @@ const router = createBrowserRouter([
   { path: "/register", Component: Register},
   { path: "/profile", Component: Profile},
   { path: "/profile/create", Component: ProfileCreate},
-  { path: "/profile/:profileId", Component: ProfileDetail}
+  { path: "/profile/:profileId", Component: ProfileDetail},
+  { path: "/platform", Component: Platforms}
 ])
 
 export default router;

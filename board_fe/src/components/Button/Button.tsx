@@ -5,6 +5,7 @@ const Button = ({
   onClick = () => {},
   disabled = false,
   color = "blue",
+  className = "",
 }) => {
   const colorStyle = useMemo(() => {
     switch (color) {
@@ -16,7 +17,7 @@ const Button = ({
   }, [color]);
   return (
     <button
-      className={`p-2 rounded-md block ${
+      className={`p-2 rounded-md block ${className} ${
         !disabled
           ? colorStyle
           : "bg-slate-300 text-white hover:cursor-not-allowed h-fit w-fit"

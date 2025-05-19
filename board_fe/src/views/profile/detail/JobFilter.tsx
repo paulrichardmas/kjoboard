@@ -9,7 +9,7 @@ const JobFilter = ({ onChange }) => {
     defaultValues: {
       company: "",
       title: "",
-      appliedDate: "",
+      applied_date: "",
       status: "",
     },
   });
@@ -32,7 +32,7 @@ const JobFilter = ({ onChange }) => {
     >
       <Input placeholder="Company Name" {...register("company")} />
       <Input placeholder="Job title" {...register("title")} />
-      <Input placeholder="Application Date" {...register("appliedDate")} />
+      <Input placeholder="Application Date" {...register("applied_date")} />
       <select
         className="text-sm border p-2 border-slate-400 rounded-lg"
         {...register("status")}

@@ -11,8 +11,17 @@ export const getPostedDateDice = (text) => {
   return null;
 }
 
+export const getPostedDateLinkedin = (text) => {
+  const match = text.match(/\d+/);
+  if (match) {
+    return parseInt(match[0])
+  }
+  return null;
+}
+
 export const getPostedDate = {
-  'www.dice.com': getPostedDateDice
+  'www.dice.com': getPostedDateDice,
+  'www.linkedin.com': getPostedDateLinkedin
 }
 
 export const isEmpty = (value: any): boolean  => {
