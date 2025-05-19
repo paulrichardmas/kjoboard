@@ -21,7 +21,10 @@ class JobListCreateView(APIView):
   )
   def get(self, request, profile_id):
     try:
-      jobs = Job.objects.filter(profile_id = profile_id)
+      filter = {}
+      for key, value in request.query_params.items():
+        filter[f"{key}__icontains"] = value
+      jobs = Job.objects.filter(profile_id = profile_id, **filter)
       serializer = JobRepositorySerializer(jobs, many=True)
       return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -32,6 +32,26 @@ export interface IProfile {
 }
 
 export interface IProfileState {
-  profiles: IProfile[],
+  profiles: IProfile[]
   profile: IProfile
+}
+
+export interface IJob {
+  jobId: string
+  url: string
+  company: string
+  title: string
+  location: string
+  description: string
+  application: string
+  status: string
+  postedDate: string
+  appliedDate: string
+  prompt: string
+  resumePath: string
+}
+
+export interface IJobState {
+  jobs: IJob[]
+  job: IJob | null
 }

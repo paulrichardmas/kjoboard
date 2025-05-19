@@ -1,6 +1,11 @@
 import React, { useMemo } from "react";
 
-const Button = ({ children, onClick, disabled = false, color = "blue" }) => {
+const Button = ({
+  children,
+  onClick = () => {},
+  disabled = false,
+  color = "blue",
+}) => {
   const colorStyle = useMemo(() => {
     switch (color) {
       case "blue":

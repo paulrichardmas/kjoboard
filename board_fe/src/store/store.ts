@@ -5,12 +5,14 @@ import authSlice from "./auth"
 import bannerSlice from "./banner"
 import profileSlice from "./profile"
 import platformsSlice from "./platforms"
+import jobSlice from "./job"
  
 const rootReducer = combineReducers({
   auth: authSlice,
   banner: bannerSlice,
   profile: profileSlice,
-  platform: platformsSlice
+  platform: platformsSlice,
+  job: jobSlice
 })
  
 export const store = configureStore({
