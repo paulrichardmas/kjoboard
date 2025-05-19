@@ -11,7 +11,7 @@ import "./tailwind.css"
 
 function IndexPopup() {
   return (
-    <div style={{ width: "200px", minHeight: "300px" }}>
+    <div style={{ minWidth: "250px", minHeight: "300px" }}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <RouterProvider router={router} />

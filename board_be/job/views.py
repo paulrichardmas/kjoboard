@@ -37,8 +37,8 @@ class JobListCreateView(APIView):
     try:
       serializer = JobCreateSerializer(data=request.data, context={'profile': profile_id})
       if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        job = serializer.save()
+        return Response(JobRepositorySerializer(job).data, status=status.HTTP_200_OK)
       else:
         return Response({"error": "Invalid params"}, status=status.HTTP_400_BAD_REQUEST)
     except:

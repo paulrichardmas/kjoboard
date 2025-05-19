@@ -86,6 +86,6 @@ class ProfileDetailView(APIView):
 
     serializer = ProfilePatchSerializer(profile, data=request.data, partial=True, context={"user": request.user.id})
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        profile = serializer.save()
+        return Response(ProfileRepositorySerializer(profile).data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

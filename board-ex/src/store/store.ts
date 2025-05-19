@@ -16,10 +16,12 @@ import { Storage } from "@plasmohq/storage"
  
 import authSlice from "./auth"
 import bannerSlice from "./banner"
+import profileSlice from "./profile"
  
 const rootReducer = combineReducers({
   auth: authSlice,
   banner: bannerSlice,
+  profile: profileSlice
 })
  
 const persistConfig = {

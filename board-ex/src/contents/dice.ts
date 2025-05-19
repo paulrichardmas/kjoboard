@@ -9,7 +9,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       const company = document.querySelector('a[data-cy="companyNameLink"]')
       const location = document.querySelector('li[data-cy="location"]')
       const postedDate = document.querySelector('li[data-cy="postedDate"]')
-      const detail = document.getElementById("jobDescription")
+      const description = document.getElementById("jobDescription")
       const url = window.location.href
 
       sendResponse({
@@ -17,7 +17,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         company: company.textContent,
         location: location.textContent,
         postedDate: postedDate.textContent,
-        detail: detail.textContent,
+        description: description.textContent,
         url
       })
     }
