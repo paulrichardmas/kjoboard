@@ -17,6 +17,7 @@ class Job(models.Model):
   description = models.TextField(blank=True)
   applications = models.IntegerField(blank=True)
   posted_date = models.DateField(blank=True)
+  applied_date = models.DateField(blank=True, null=True)
   status = models.CharField(max_length=20, choices=Status.choices, default=Status.NOT_APPLIED)
   profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
   prompt = models.TextField(blank=True)

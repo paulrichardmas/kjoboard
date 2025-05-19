@@ -1,3 +1,4 @@
+import datetime
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -95,6 +96,7 @@ class JobApplyView(APIView):
       job=Job.objects.get(job_id=job_id)
       job.status=Job.Status.APPLIED
       job.resume_path=request.data["resume_path"]
+      job.applied_date=datetime.date.today()
       job.save()
 
       return Response(JobRepositorySerializer(job).data, status=status.HTTP_200_OK)

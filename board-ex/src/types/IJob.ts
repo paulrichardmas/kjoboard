@@ -26,5 +26,6 @@ export interface IDBJob extends IJob {
   jobId: string,
   status: EJobStatus,
   prompt: string,
-  resumePath: string
+  resumePath: string,
+  appliedDate: string
 }

@@ -1,3 +1,6 @@
+import { getPostedDate } from "~src/utils"
+import { isEmpty } from "~src/utils"
+
 export const config = {
   matches: ["https://*.dice.com/*"]
 }
@@ -5,21 +8,26 @@ export const config = {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.data == "fetchJobDetails") {
     function fetchJobDetail() {
-      const title = document.querySelector('h1[data-cy="jobTitle"]')
-      const company = document.querySelector('a[data-cy="companyNameLink"]')
-      const location = document.querySelector('li[data-cy="location"]')
-      const postedDate = document.querySelector('li[data-cy="postedDate"]')
-      const description = document.getElementById("jobDescription")
-      const url = window.location.href
+      console.log(request.body)
+      const fields = ["title", "company", "location", "postedDate", "description"]
+      const data = {
+        url: window.location.href
+      }
+      for(let field of fields) {
+        console.log(field)
+        if (!isEmpty(request.body[field]))
+        if (request.body[field] == "-") {
+          data[field] = ""
+        } else {
+          if (field == "postedDate") {
+            data[field] = getPostedDate(document.querySelector(request.body[field])?.textContent)
+          } else {
+            data[field] = document.querySelector(request.body[field])?.textContent ?? ""
+          }
+        }
+      }
 
-      sendResponse({
-        title: title.textContent,
-        company: company.textContent,
-        location: location.textContent,
-        postedDate: postedDate.textContent,
-        description: description.textContent,
-        url
-      })
+      sendResponse(data)
     }
 
     fetchJobDetail()

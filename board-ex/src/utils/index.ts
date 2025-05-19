@@ -1,5 +1,5 @@
 export const getPostedDate = (text) => {
-  const match = text.match(/Posted (\d+) days ago/);
+  const match = text.match(/Posted\s+([^|]+)/);
   if (match) {
     const daysAgo = parseInt(match[1], 10);
     const postedDate = new Date();

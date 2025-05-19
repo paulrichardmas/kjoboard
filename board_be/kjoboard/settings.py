@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'job.apps.JobConfig',
     'prompt.apps.PromptConfig',
+    'platforms.apps.PlatformsConfig',
     'corsheaders'
 ]
 

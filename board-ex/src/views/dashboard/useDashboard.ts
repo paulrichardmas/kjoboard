@@ -7,12 +7,14 @@ import { ECanPushJob, EJobStatus } from "~src/types/IJob"
 import { setProfiles, setProfile } from "~src/store/profile";
 import { profilesSelector, profileSelector } from "~src/store/profile";
 import { setBanner, removeBanner } from "~src/store/banner";
-import { getPostedDate, isEmpty } from "~src/utils";
+import { platformsSelector } from "~src/store/platforms";
+import { isEmpty } from "~src/utils";
 
 export const useDashboard = () => {
   const dispatch = useDispatch();
   const profiles = useSelector(profilesSelector)
   const profile = useSelector(profileSelector)
+  const platform = useSelector(platformsSelector)
   const [jobDetail, setJobDetail] = useState<IJob>()
   const [haveJobStatus, setHaveJobStatus] = useState<ECanPushJob>(ECanPushJob.CANNOT_PUSH_JOB)
   const [job, setJob] = useState<IDBJob>()
@@ -25,6 +27,7 @@ export const useDashboard = () => {
   const jobStatus = useMemo(() => job ? job.status : EJobStatus.NONE, [job]);
   const canApplyJob = useMemo(() => !(jobStatus == EJobStatus.NOT_APPLIED), [jobStatus])
 
+  // Fetch Profile
   useEffect(() => {
     (async () => {
       dispatch(setBanner());
@@ -68,7 +71,7 @@ export const useDashboard = () => {
       if (tabs.length > 0 && tabs[0].id !== undefined) {
         chrome.tabs.sendMessage(
           tabs[0].id,
-          { data: "fetchJobDetails" },
+          { data: "fetchJobDetails", body: platform },
           (response) => {
             if (response) {
               setJobDetail(response)
@@ -96,7 +99,7 @@ export const useDashboard = () => {
         location: jobDetail.location,
         description: jobDetail.description,
         applications: jobDetail.applications ?? 0,
-        postedDate: getPostedDate(jobDetail.postedDate)
+        postedDate: jobDetail.postedDate
       })
       setJob(res.data)
       setHaveJobStatus(ECanPushJob.JOB_EXISTING)
