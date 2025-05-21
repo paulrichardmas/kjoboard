@@ -30,4 +30,4 @@ services:
       - postgres_db
       - board_be
     environment:
-      - VITE_API_URL=http://localhost:8000
+      - VITE_API_URL=http://172.20.1.12:8000/api

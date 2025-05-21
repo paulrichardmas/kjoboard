@@ -2,9 +2,8 @@ import axios from "axios";
 import { store } from "../store/store";
 import snakecaseKeys from "snakecase-keys";
 import camelcaseKeys from "camelcase-keys";
-
 const instance = axios.create({
-  baseURL: "http://localhost:8000/api"
+  baseURL: import.meta.env.VITE_API_URL
 });
 
 instance.interceptors.request.use(
