@@ -24,7 +24,7 @@ const Dashboard = () => {
 
   const formatString = (text: string | undefined) => {
     if (!text) return "---"
-    // return text.trim().slice(0, 15) + (text.trim().length > 15 ? "..." : "")
+    return text.trim().slice(0, 15) + (text.trim().length > 15 ? "..." : "")
   }
 
   return (
