@@ -7,6 +7,7 @@ import { useDashboard } from "./useDashboard"
 const Dashboard = () => {
   const {
     job,
+    profile,
     profiles,
     jobDetail,
     canPushJob,
@@ -33,7 +34,10 @@ const Dashboard = () => {
       <Layout>
         <div>
           <div className="mb-2">
-            <select className="w-full p-2 mb-2" onChange={onChangeProfile}>
+            <select
+              className="w-full p-2 mb-2"
+              value={profile.profileId}
+              onChange={onChangeProfile}>
               {profiles?.map((profile) => (
                 <option key={profile.profileId} value={profile.profileId}>
                   {profile.name}

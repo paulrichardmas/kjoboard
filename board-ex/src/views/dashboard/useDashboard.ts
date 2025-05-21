@@ -31,7 +31,7 @@ export const useDashboard = () => {
     () => ({
       canPush: haveJobStatus != ECanPushJob.CAN_PUSH_JOB,
       existingJob: haveJobStatus == ECanPushJob.JOB_EXISTING,
-      canGen: haveJobStatus == ECanPushJob.JOB_EXISTING
+      canGen: haveJobStatus == ECanPushJob.JOB_EXISTING && prompt
     }),
     [haveJobStatus]
   )
