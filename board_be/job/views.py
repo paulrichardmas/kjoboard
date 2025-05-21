@@ -127,13 +127,13 @@ class JobCheckView(APIView):
 @require_profile_cbv
 class JobPromptGenView(APIView):
   @swagger_auto_schema(
-    responses={200: openapi.Response('Check job with link', JobRepositorySerializer)},
-    operation_description="Check job with link",
+    responses={200: openapi.Response('Generate prompt for the job', JobRepositorySerializer)},
+    operation_description="Generate prompt for the job",
     tags=['Job']
   )
-  def get(self, request, profile_id, job_id):
+  def get(self, request, profile_id, job_id, prompt_id):
     try:
-      prompt = Prompt.objects.get(default=True)
+      prompt = Prompt.objects.get(prompt_id=prompt_id)
       profile = Profile.objects.get(profile_id=profile_id)
       job = Job.objects.get(job_id=job_id)
 

@@ -10,11 +10,21 @@ class PromptCreateSerializer(ModelSerializer):
 
   class Meta:
     model=Prompt
-    fields=['text', 'info']
+    fields=['text']
 
   def create(self, validated_data):
-    prompt = Prompt.objects.create(text=validated_data['text'], default=False, info=validated_data['info'])
+    prompt = Prompt.objects.create(text=validated_data['text'], default=False)
     return prompt
+  
+class PromptUpdateSerializer(ModelSerializer):
+  class Meta:
+    model=Prompt
+    fields=['text']
+  
+  def update(self, instance, validated_data):
+    instance.text = validated_data['text']
+    instance.save()
+    return instance
   
 class PromptFieldRpositorySerializer(ModelSerializer):
   class Meta:

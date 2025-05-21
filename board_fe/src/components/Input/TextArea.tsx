@@ -5,7 +5,7 @@ const TextArea = (props) => {
     <textarea
       className="border border-slate-500 rounded-lg p-2 w-full"
       type={props.type ?? "text"}
-      cols={4}
+      rows={props.rows ?? 4}
       {...props}
     />
   );
