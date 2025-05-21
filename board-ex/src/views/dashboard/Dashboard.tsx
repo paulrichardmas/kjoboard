@@ -90,7 +90,7 @@ const Dashboard = () => {
                 <td>
                   <b>PostedDate</b>
                 </td>
-                <td>{formatString(jobDetail?.postedDate)}</td>
+                <td>{jobDetail?.postedDate}</td>
               </tr>
             </tbody>
           </table>

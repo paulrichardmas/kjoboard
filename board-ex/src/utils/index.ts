@@ -1,66 +1,65 @@
 import moment from "moment"
 
 export const getPostedDateDice = (text) => {
-  const match = text.match(/Posted\s+([^|]+)/);
+  const match = text.match(/Posted\s+([^|]+)/)
   if (match) {
-    const daysAgo = parseInt(match[1], 10);
-    const postedDate = new Date();
-    postedDate.setDate(postedDate.getDate() - daysAgo);
-    return postedDate.toISOString().split('T')[0]; // Returns date in 'YYYY-MM-DD' format
+    const daysAgo = parseInt(match[1], 10)
+    const postedDate = new Date()
+    postedDate.setDate(postedDate.getDate() - daysAgo)
+    return postedDate.toISOString().split("T")[0] // Returns date in 'YYYY-MM-DD' format
   }
-  return null;
+  return null
 }
 
 export const getPostedDateLinkedin = (text) => {
-  const match = text.match(/\d+/);
-  if (match) {
-    return parseInt(match[0])
-  }
-  return null;
+  return moment().format("YYYY-MM-DD")
 }
 
 export const getPostedDate = {
-  'www.dice.com': getPostedDateDice,
-  'www.linkedin.com': getPostedDateLinkedin
+  "www.dice.com": getPostedDateDice,
+  "www.linkedin.com": getPostedDateLinkedin
 }
 
-export const isEmpty = (value: any): boolean  => {
-  if (value === null || value === undefined) return true;
+export const isEmpty = (value: any): boolean => {
+  if (value === null || value === undefined) return true
 
-  if (typeof value === 'string' && value.trim() === '') return true;
+  if (typeof value === "string" && value.trim() === "") return true
 
-  if (Array.isArray(value) && value.length === 0) return true;
+  if (Array.isArray(value) && value.length === 0) return true
 
-  if (typeof value === 'object' && !Array.isArray(value)) {
-    return Object.keys(value).length === 0;
+  if (typeof value === "object" && !Array.isArray(value)) {
+    return Object.keys(value).length === 0
   }
 
-  if (typeof value === 'number' && isNaN(value)) return true;
+  if (typeof value === "number" && isNaN(value)) return true
 
-  return false;
+  return false
 }
 
 export const fetchJobDetail = (request) => {
   const fields = ["title", "company", "location", "postedDate", "description"]
-  const host = window.location.host;
+  const host = window.location.host
   const data = {
     url: window.location.href
   }
-  for(let field of fields) {
+  for (let field of fields) {
     if (!isEmpty(request.body[field]))
-    if (request.body[field] == "-") {
-      if (field == 'postedDate') {
-        data[field] = moment().format("YYYY-MM-DD")
+      if (request.body[field] == "-") {
+        if (field == "postedDate") {
+          data[field] = moment().format("YYYY-MM-DD")
+        } else {
+          data[field] = ""
+        }
       } else {
-        data[field] = ""
+        if (field == "postedDate") {
+          data[field] = getPostedDate[host](
+            document.querySelector(request.body[field])?.textContent
+          )
+        } else {
+          data[field] =
+            document.querySelector(request.body[field])?.textContent ?? ""
+        }
       }
-    } else {
-      if (field == "postedDate") {
-        data[field] = getPostedDate[host](document.querySelector(request.body[field])?.textContent)
-      } else {
-        data[field] = document.querySelector(request.body[field])?.textContent ?? ""
-      }
-    }
   }
 
   return data

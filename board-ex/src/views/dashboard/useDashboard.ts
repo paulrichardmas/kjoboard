@@ -1,67 +1,79 @@
-import { useState, useEffect, useMemo } from "react";
-import axios from "~src/axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useMemo, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
-import type { IJob, IDBJob } from "~src/types/IJob"
+import axios from "~src/axios"
+import { removeBanner, setBanner } from "~src/store/banner"
+import { platformsSelector } from "~src/store/platforms"
+import {
+  profileSelector,
+  profilesSelector,
+  setProfile,
+  setProfiles
+} from "~src/store/profile"
+import type { IDBJob, IJob } from "~src/types/IJob"
 import { ECanPushJob, EJobStatus } from "~src/types/IJob"
-import { setProfiles, setProfile } from "~src/store/profile";
-import { profilesSelector, profileSelector } from "~src/store/profile";
-import { setBanner, removeBanner } from "~src/store/banner";
-import { platformsSelector } from "~src/store/platforms";
-import { isEmpty } from "~src/utils";
+import { isEmpty } from "~src/utils"
 
 export const useDashboard = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const profiles = useSelector(profilesSelector)
   const profile = useSelector(profileSelector)
   const platform = useSelector(platformsSelector)
   const [jobDetail, setJobDetail] = useState<IJob>()
-  const [haveJobStatus, setHaveJobStatus] = useState<ECanPushJob>(ECanPushJob.CANNOT_PUSH_JOB)
+  const [haveJobStatus, setHaveJobStatus] = useState<ECanPushJob>(
+    ECanPushJob.CANNOT_PUSH_JOB
+  )
   const [job, setJob] = useState<IDBJob>()
 
-  const canPushJob = useMemo(() => ({
-    canPush: haveJobStatus != ECanPushJob.CAN_PUSH_JOB,
-    existingJob: haveJobStatus == ECanPushJob.JOB_EXISTING,
-  }), [haveJobStatus])
+  const canPushJob = useMemo(
+    () => ({
+      canPush: haveJobStatus != ECanPushJob.CAN_PUSH_JOB,
+      existingJob: haveJobStatus == ECanPushJob.JOB_EXISTING
+    }),
+    [haveJobStatus]
+  )
 
-  const jobStatus = useMemo(() => job ? job.status : EJobStatus.NONE, [job]);
-  const canApplyJob = useMemo(() => !(jobStatus == EJobStatus.NOT_APPLIED), [jobStatus])
+  const jobStatus = useMemo(() => (job ? job.status : EJobStatus.NONE), [job])
+  const canApplyJob = useMemo(
+    () => !(jobStatus == EJobStatus.NOT_APPLIED),
+    [jobStatus]
+  )
 
   // Fetch Profile
   useEffect(() => {
-    (async () => {
-      dispatch(setBanner());
+    ;(async () => {
+      dispatch(setBanner())
       try {
-        const res = await axios.get('/accounts/profile/');
+        const res = await axios.get("/accounts/profile/")
         dispatch(setProfiles(res.data.profiles))
         if (isEmpty(profile)) {
           dispatch(setProfile(res.data.profiles[0]))
         }
-      } catch(error) {
-        console.error(error);
+      } catch (error) {
+        console.error(error)
       } finally {
-        dispatch(removeBanner());
+        dispatch(removeBanner())
       }
     })()
   }, [])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (!jobDetail || !profile) {
         setHaveJobStatus(ECanPushJob.CANNOT_PUSH_JOB)
-        return;
+        return
       }
       try {
-        dispatch(setBanner());
+        dispatch(setBanner())
         const res = await axios.post(`/job/check/${profile.profileId}/`, {
           url: jobDetail.url
         })
-        setJob(res.data);
+        setJob(res.data)
         setHaveJobStatus(ECanPushJob.JOB_EXISTING)
-      } catch(error) {
+      } catch (error) {
         setHaveJobStatus(ECanPushJob.CAN_PUSH_JOB)
       } finally {
-        dispatch(removeBanner());
+        dispatch(removeBanner())
       }
     })()
   }, [jobDetail, profile])
@@ -74,6 +86,7 @@ export const useDashboard = () => {
           { data: "fetchJobDetails", body: platform },
           (response) => {
             if (response) {
+              console.log(response)
               setJobDetail(response)
             }
           }
@@ -83,14 +96,14 @@ export const useDashboard = () => {
   }
 
   const updateProfile = (id) => {
-    const selectedProfile = profiles?.find(item => item.profileId == id)
+    const selectedProfile = profiles?.find((item) => item.profileId == id)
     if (selectedProfile) {
-      dispatch(setProfile(selectedProfile));
+      dispatch(setProfile(selectedProfile))
     }
   }
 
   const pushJob = async () => {
-    dispatch(setBanner());
+    dispatch(setBanner())
     try {
       const res = await axios.post(`/job/${profile.profileId}/`, {
         url: jobDetail.url,
@@ -106,33 +119,38 @@ export const useDashboard = () => {
     } catch (error) {
       console.error(error)
     } finally {
-      dispatch(removeBanner());
+      dispatch(removeBanner())
     }
   }
 
   const applyJob = async () => {
-    dispatch(setBanner());
+    dispatch(setBanner())
     try {
-      const res = await axios.post(`/job/apply/${profile.profileId}/${job.jobId}/`, {
-        resumePath: ""
-      })
+      const res = await axios.post(
+        `/job/apply/${profile.profileId}/${job.jobId}/`,
+        {
+          resumePath: ""
+        }
+      )
       setJob(res.data)
     } catch (error) {
       console.error(error)
     } finally {
-      dispatch(removeBanner());
+      dispatch(removeBanner())
     }
   }
 
   const generatePrompt = async () => {
-    dispatch(setBanner());
+    dispatch(setBanner())
     try {
-      const res = await axios.get(`/job/gen-prompt/${profile.profileId}/${job.jobId}/`)
+      const res = await axios.get(
+        `/job/gen-prompt/${profile.profileId}/${job.jobId}/`
+      )
       console.log(res)
     } catch (error) {
       console.error(error)
     } finally {
-      dispatch(removeBanner());
+      dispatch(removeBanner())
     }
   }
 
@@ -150,4 +168,4 @@ export const useDashboard = () => {
     applyJob,
     generatePrompt
   }
-};
+}

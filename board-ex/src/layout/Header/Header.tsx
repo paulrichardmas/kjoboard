@@ -34,7 +34,6 @@ const Header = () => {
       const res = await axios.post("/platforms/detail/", {
         platformUrl: `https://${url}`
       })
-      console.log(res.data)
       dispatch(setPlatforms(res.data))
     } catch (error) {
       console.error(error)
