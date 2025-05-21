@@ -6,6 +6,7 @@ import { useDashboard } from "./useDashboard"
 
 const Dashboard = () => {
   const {
+    job,
     profiles,
     jobDetail,
     canPushJob,
@@ -100,13 +101,25 @@ const Dashboard = () => {
               Push to DB
             </Button>
 
-            <Button onClick={generatePrompt} disabled={!canPushJob.existingJob}>
+            <Button onClick={generatePrompt} disabled={!canPushJob.canGen}>
               Prompt
             </Button>
 
             <Button onClick={applyJob} disabled={canApplyJob}>
               Applied
             </Button>
+          </div>
+
+          <div className="flex justify-center mt-2">
+            {job?.prompt && (
+              <Button
+                onClick={() => {
+                  navigator.clipboard.writeText(job.prompt)
+                  alert("Copied!")
+                }}>
+                You have prompt already!
+              </Button>
+            )}
           </div>
         </div>
       </Layout>

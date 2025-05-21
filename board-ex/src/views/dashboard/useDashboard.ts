@@ -10,12 +10,14 @@ import {
   setProfile,
   setProfiles
 } from "~src/store/profile"
+import { promptSelector } from "~src/store/prompt"
 import type { IDBJob, IJob } from "~src/types/IJob"
 import { ECanPushJob, EJobStatus } from "~src/types/IJob"
 import { isEmpty } from "~src/utils"
 
 export const useDashboard = () => {
   const dispatch = useDispatch()
+  const prompt = useSelector(promptSelector)
   const profiles = useSelector(profilesSelector)
   const profile = useSelector(profileSelector)
   const platform = useSelector(platformsSelector)
@@ -28,7 +30,8 @@ export const useDashboard = () => {
   const canPushJob = useMemo(
     () => ({
       canPush: haveJobStatus != ECanPushJob.CAN_PUSH_JOB,
-      existingJob: haveJobStatus == ECanPushJob.JOB_EXISTING
+      existingJob: haveJobStatus == ECanPushJob.JOB_EXISTING,
+      canGen: haveJobStatus == ECanPushJob.JOB_EXISTING
     }),
     [haveJobStatus]
   )
@@ -68,6 +71,7 @@ export const useDashboard = () => {
         const res = await axios.post(`/job/check/${profile.profileId}/`, {
           url: jobDetail.url
         })
+        console.log(res.data)
         setJob(res.data)
         setHaveJobStatus(ECanPushJob.JOB_EXISTING)
       } catch (error) {
@@ -86,7 +90,6 @@ export const useDashboard = () => {
           { data: "fetchJobDetails", body: platform },
           (response) => {
             if (response) {
-              console.log(response)
               setJobDetail(response)
             }
           }
@@ -143,10 +146,11 @@ export const useDashboard = () => {
   const generatePrompt = async () => {
     dispatch(setBanner())
     try {
+      if (!prompt) return
       const res = await axios.get(
-        `/job/gen-prompt/${profile.profileId}/${job.jobId}/`
+        `/job/gen-prompt/${profile.profileId}/${job.jobId}/${prompt.promptId}/`
       )
-      console.log(res)
+      setJob(res.data)
     } catch (error) {
       console.error(error)
     } finally {
@@ -155,6 +159,7 @@ export const useDashboard = () => {
   }
 
   return {
+    job,
     profiles,
     profile,
     jobDetail,

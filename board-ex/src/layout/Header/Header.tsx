@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { useDispatch } from "~node_modules/react-redux/dist/react-redux"
+import { Link } from "~node_modules/react-router/dist/development"
 import axios from "~src/axios"
 import { removeAuthState } from "~src/store/auth"
 import { removeBanner, setBanner } from "~src/store/banner"
@@ -44,7 +45,8 @@ const Header = () => {
 
   return (
     <div className="p-1 w-full bg-slate-700 flex justify-between text-white">
-      <div>{title}</div>
+      <Link to="/">{title}</Link>
+      <Link to="/prompts">Prompts</Link>
       <div>
         <button onClick={logout}>Logout</button>
       </div>
