@@ -26,6 +26,10 @@ const Header = () => {
           <Link className="hover:cursor-pointer" to="/platform">
             Platforms
           </Link>
+
+          <Link className="hover:cursor-pointer" to="/prompt">
+            Prompts
+          </Link>
         </div>
         <div>
           <button className="hover:cursor-pointer" onClick={logout}>

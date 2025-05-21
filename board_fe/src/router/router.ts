@@ -6,6 +6,7 @@ import Profile from "../views/profile/Profile";
 import ProfileCreate from "../views/profile/create/ProfileCreate";
 import ProfileDetail from "../views/profile/detail/ProfileDetail"
 import Platforms from "../views/platforms/Platforms";
+import Prompt from "../views/prompt/Prompt";
 
 const router = createBrowserRouter([
   { path: "/", Component: Dashboard},
@@ -14,7 +15,8 @@ const router = createBrowserRouter([
   { path: "/profile", Component: Profile},
   { path: "/profile/create", Component: ProfileCreate},
   { path: "/profile/:profileId", Component: ProfileDetail},
-  { path: "/platform", Component: Platforms}
+  { path: "/platform", Component: Platforms},
+  { path: "/prompt", Component: Prompt}
 ])
 
 export default router;
