@@ -44,8 +44,10 @@ class JobListCreateView(APIView):
         job = serializer.save()
         return Response(JobRepositorySerializer(job).data, status=status.HTTP_200_OK)
       else:
+        print(serializer.errors)
         return Response({"error": "Invalid params"}, status=status.HTTP_400_BAD_REQUEST)
-    except:
+    except Exception as e:
+      print(e)
       return Response({"error": "Invalid params"}, status=status.HTTP_400_BAD_REQUEST)
     
 @protected_view_cbv

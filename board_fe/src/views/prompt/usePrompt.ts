@@ -52,6 +52,7 @@ export const usePrompt = () => {
         text: prompt
       });
       setPrompts([...prompts, res.data])
+      setPrompt("")
     } catch (error) {
       console.error(error);
     } finally {

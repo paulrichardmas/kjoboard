@@ -10,7 +10,7 @@ class Job(models.Model):
     PASSED = 'passed'
     FAILED = 'failed'
   job_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-  url = models.URLField(blank=True, unique=True)
+  url = models.URLField(blank=True, unique=True, max_length=1000)
   company = models.TextField(blank=True)
   title = models.TextField(blank=True)
   location = models.TextField(blank=True)

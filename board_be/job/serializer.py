@@ -44,5 +44,6 @@ class JobCreateSerializer(ModelSerializer):
       )
 
       return job
-    except:
+    except Exception as e:
+      print(e)
       raise ValidationError("Cannot find profile")

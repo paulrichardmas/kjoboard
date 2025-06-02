@@ -31,7 +31,14 @@ const PromptCard = ({ prompt, onUpdate, onDelete }) => {
             onChange={(event) => setPromptText(event.target.value)}
           />
           <div className="flex gap-2 justify-end">
-            <Button onClick={() => onUpdate(prompt, promptText)}>Save</Button>
+            <Button
+              onClick={() => {
+                onUpdate(prompt, promptText);
+                setIsUpdating(false);
+              }}
+            >
+              Save
+            </Button>
             <Button color="red" onClick={() => setIsUpdating(false)}>
               Cancel
             </Button>
